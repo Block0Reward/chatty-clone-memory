@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Plus, ChevronDown, ChevronRight, MessageSquare, PanelLeftClose, PanelLeft, FolderPlus, ChevronsDown, Moon, Sun } from 'lucide-react';
+import { Search, Plus, ChevronDown, ChevronRight, MessageSquare, PanelLeftClose, PanelLeft, FolderPlus, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -27,11 +27,6 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
         ? prev.filter(id => id !== folderId)
         : [...prev, folderId]
     );
-  };
-
-  const expandAllFolders = () => {
-    const allFolderIds = projects.map(project => project.id);
-    setExpandedFolders(allFolderIds);
   };
 
   const createNewProject = () => {
@@ -93,7 +88,11 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
             variant="ghost"
             size="sm"
             onClick={onToggleCollapse}
-            className="w-full h-10 p-0 hover:bg-gray-100"
+            className={`w-full h-10 p-0 ${
+              isDarkMode 
+                ? 'hover:bg-gray-700 text-gray-300' 
+                : 'hover:bg-gray-100 text-gray-600'
+            }`}
           >
             <PanelLeft className="h-4 w-4" />
           </Button>
@@ -104,14 +103,22 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
             variant="ghost"
             size="sm"
             onClick={onToggleTheme}
-            className="w-full h-10 p-0 hover:bg-gray-100"
+            className={`w-full h-10 p-0 ${
+              isDarkMode 
+                ? 'hover:bg-gray-700 text-gray-300' 
+                : 'hover:bg-gray-100 text-gray-600'
+            }`}
           >
             {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="w-full h-10 p-0 hover:bg-gray-100"
+            className={`w-full h-10 p-0 ${
+              isDarkMode 
+                ? 'hover:bg-gray-700 text-gray-300' 
+                : 'hover:bg-gray-100 text-gray-600'
+            }`}
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -124,21 +131,6 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
     <div className={`w-64 border-r flex flex-col h-screen ${
       isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
     }`}>
-      {/* Header */}
-      <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-        <Button 
-          className={`w-full h-11 text-sm font-medium justify-start ${
-            isDarkMode 
-              ? 'bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-600' 
-              : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'
-          }`}
-          variant="outline"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          New chat
-        </Button>
-      </div>
-
       {/* Search */}
       <div className="p-3">
         <div className="relative">
@@ -158,27 +150,34 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
         </div>
       </div>
 
+      {/* New Chat Button - Moved below search */}
+      <div className={`px-3 pb-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+        <Button 
+          className={`w-full h-11 text-sm font-medium justify-start ${
+            isDarkMode 
+              ? 'bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-600' 
+              : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'
+          }`}
+          variant="outline"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          New chat
+        </Button>
+      </div>
+
       {/* Project Actions */}
-      <div className="px-3 pb-2 space-y-2">
+      <div className="px-3 py-2 space-y-2">
         <Button 
           variant="ghost" 
           onClick={createNewProject}
           className={`w-full justify-start text-sm font-medium h-8 ${
-            isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+            isDarkMode 
+              ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
+              : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
           <FolderPlus className="h-4 w-4 mr-2" />
           New project
-        </Button>
-        <Button 
-          variant="ghost" 
-          onClick={expandAllFolders}
-          className={`w-full justify-start text-sm font-medium h-8 ${
-            isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
-          }`}
-        >
-          <ChevronsDown className="h-4 w-4 mr-2" />
-          Expand all folders
         </Button>
       </div>
 
@@ -191,7 +190,9 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
                 variant="ghost"
                 onClick={() => toggleFolder(project.id)}
                 className={`w-full justify-start text-sm font-medium h-8 px-2 ${
-                  isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+                  isDarkMode 
+                    ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
+                    : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 {expandedFolders.includes(project.id) ? (
@@ -210,7 +211,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
                       variant="ghost"
                       className={`w-full justify-start text-sm h-8 px-2 ${
                         isDarkMode 
-                          ? 'text-gray-400 hover:bg-gray-800' 
+                          ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200' 
                           : 'text-gray-600 hover:bg-gray-100'
                       }`}
                     >
@@ -229,7 +230,9 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
           <Button
             variant="ghost"
             className={`w-full justify-start text-sm h-8 px-2 ${
-              isDarkMode ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'
+              isDarkMode 
+                ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200' 
+                : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
             ...&nbsp;&nbsp;See more
@@ -248,7 +251,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
                 variant="ghost"
                 className={`w-full justify-start text-sm h-8 px-2 mb-0.5 ${
                   isDarkMode 
-                    ? 'text-gray-300 hover:bg-gray-800' 
+                    ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -269,7 +272,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
                 variant="ghost"
                 className={`w-full justify-start text-sm h-8 px-2 mb-0.5 ${
                   isDarkMode 
-                    ? 'text-gray-300 hover:bg-gray-800' 
+                    ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -290,7 +293,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
                 variant="ghost"
                 className={`w-full justify-start text-sm h-8 px-2 mb-0.5 ${
                   isDarkMode 
-                    ? 'text-gray-300 hover:bg-gray-800' 
+                    ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -309,7 +312,9 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
           variant="ghost"
           onClick={onToggleTheme}
           className={`w-full justify-start text-sm h-8 ${
-            isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+            isDarkMode 
+              ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
+              : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
           {isDarkMode ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
@@ -319,7 +324,9 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
           variant="ghost"
           onClick={onToggleCollapse}
           className={`w-full justify-start text-sm h-8 ${
-            isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+            isDarkMode 
+              ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
+              : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
           <PanelLeftClose className="h-4 w-4 mr-2" />

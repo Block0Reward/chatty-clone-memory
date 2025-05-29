@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Plus, Globe, Mic, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,6 +12,15 @@ interface ChatInputProps {
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, isDarkMode = false }) => {
   const [message, setMessage] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize textarea
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 128)}px`;
+    }
+  }, [message]);
 
   const handleSubmit = () => {
     if (message.trim() && !disabled) {
@@ -57,7 +66,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
                 size="sm"
                 onClick={handleFileUpload}
                 className={`p-2 h-8 w-8 rounded-full flex-shrink-0 ${
-                  isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                  isDarkMode 
+                    ? 'hover:bg-gray-700 text-gray-300 hover:text-gray-100' 
+                    : 'hover:bg-gray-100 text-gray-600 hover:text-gray-800'
                 }`}
               >
                 <Plus className="h-4 w-4" />
@@ -69,7 +80,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
                 size="sm"
                 onClick={handleWebSearch}
                 className={`p-2 h-8 w-8 rounded-full flex-shrink-0 ${
-                  isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                  isDarkMode 
+                    ? 'hover:bg-gray-700 text-gray-300 hover:text-gray-100' 
+                    : 'hover:bg-gray-100 text-gray-600 hover:text-gray-800'
                 }`}
               >
                 <Globe className="h-4 w-4" />
@@ -79,11 +92,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
             {/* Text Input */}
             <div className="flex-1 min-h-[20px] max-h-32">
               <Textarea
+                ref={textareaRef}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Message ChatGPT..."
-                className={`border-0 resize-none bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 p-0 min-h-[20px] ${
+                className={`border-0 resize-none bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 p-0 min-h-[20px] overflow-y-auto ${
                   isDarkMode 
                     ? 'placeholder:text-gray-400 text-gray-200' 
                     : 'placeholder:text-gray-400'
@@ -106,7 +120,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
                 size="sm"
                 onClick={handleVoiceInput}
                 className={`p-2 h-8 w-8 rounded-full ${
-                  isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                  isDarkMode 
+                    ? 'hover:bg-gray-700 text-gray-300 hover:text-gray-100' 
+                    : 'hover:bg-gray-100 text-gray-600 hover:text-gray-800'
                 }`}
               >
                 <Mic className="h-4 w-4" />
@@ -119,8 +135,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
                 size="sm"
                 className={`p-2 h-8 w-8 rounded-full disabled:opacity-50 ${
                   isDarkMode
-                    ? 'bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800'
-                    : 'bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100'
+                    ? 'bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 text-gray-300 hover:text-gray-100'
+                    : 'bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-600 hover:text-gray-800'
                 }`}
                 variant="ghost"
               >
