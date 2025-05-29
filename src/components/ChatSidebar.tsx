@@ -33,6 +33,11 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
     // TODO: Add your project creation logic here
   };
 
+  const createNewChat = () => {
+    console.log('Creating new chat...');
+    // TODO: Add your new chat creation logic here
+  };
+
   const projects = [
     {
       id: 'project1',
@@ -149,9 +154,10 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
         </div>
       </div>
 
-      {/* New Chat Button - Updated to match ChatGPT exactly */}
+      {/* New Chat Button - Updated to match New Project button style */}
       <div className="px-3 pb-3">
         <Button 
+          onClick={createNewChat}
           className={`w-full h-11 text-sm font-normal justify-start border ${
             isDarkMode 
               ? 'bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-600 hover:border-gray-500' 
@@ -167,15 +173,15 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
       {/* Project Actions */}
       <div className={`px-3 py-2 space-y-2 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
         <Button 
-          variant="ghost" 
+          variant="outline" 
           onClick={createNewProject}
-          className={`w-full justify-start text-sm font-medium h-8 ${
+          className={`w-full h-11 text-sm font-normal justify-start border ${
             isDarkMode 
-              ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
-              : 'text-gray-700 hover:bg-gray-100'
+              ? 'bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-600 hover:border-gray-500' 
+              : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow'
           }`}
         >
-          <FolderPlus className="h-4 w-4 mr-2" />
+          <FolderPlus className="h-4 w-4 mr-3" />
           New project
         </Button>
       </div>
