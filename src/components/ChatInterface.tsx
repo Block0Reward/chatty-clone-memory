@@ -83,7 +83,7 @@ const ChatInterface: React.FC = () => {
         </div>
 
         {/* Chat History */}
-        <ChatHistory messages={messages} />
+        <ChatHistory messages={messages} isDarkMode={isDarkMode} />
 
         {/* Chat Input */}
         <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} isDarkMode={isDarkMode} />

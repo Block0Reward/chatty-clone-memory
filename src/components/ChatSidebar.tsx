@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, Plus, ChevronDown, ChevronRight, MessageSquare, PanelLeftClose, PanelLeft, FolderPlus, Moon, Sun } from 'lucide-react';
+import { Search, Plus, ChevronDown, ChevronRight, MessageSquare, PanelLeftClose, PanelLeft, FolderPlus, Moon, Sun, Pen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -150,23 +149,23 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
         </div>
       </div>
 
-      {/* New Chat Button - Moved below search */}
-      <div className={`px-3 pb-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+      {/* New Chat Button - Updated to match ChatGPT exactly */}
+      <div className="px-3 pb-3">
         <Button 
-          className={`w-full h-11 text-sm font-medium justify-start ${
+          className={`w-full h-11 text-sm font-normal justify-start border ${
             isDarkMode 
-              ? 'bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-600' 
-              : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'
+              ? 'bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-600 hover:border-gray-500' 
+              : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow'
           }`}
           variant="outline"
         >
-          <Plus className="h-4 w-4 mr-2" />
+          <Pen className="h-4 w-4 mr-3" />
           New chat
         </Button>
       </div>
 
       {/* Project Actions */}
-      <div className="px-3 py-2 space-y-2">
+      <div className={`px-3 py-2 space-y-2 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
         <Button 
           variant="ghost" 
           onClick={createNewProject}
