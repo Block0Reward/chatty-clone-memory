@@ -1,15 +1,16 @@
 
 import React, { useState } from 'react';
-import { Plus, Search, Mic, ArrowRight } from 'lucide-react';
+import { Plus, Globe, Mic, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
   disabled?: boolean;
+  isDarkMode?: boolean;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, isDarkMode = false }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = () => {
@@ -42,19 +43,38 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false }
   };
 
   return (
-    <div className="border-t border-gray-200 bg-white">
+    <div className={`border-t ${isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-white'}`}>
       <div className="max-w-3xl mx-auto p-4">
-        <div className="relative bg-white border border-gray-200 rounded-3xl shadow-sm">
+        <div className={`relative rounded-3xl shadow-sm ${
+          isDarkMode ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
+        } border`}>
           <div className="flex items-end p-3 gap-3">
-            {/* File Upload Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleFileUpload}
-              className="p-2 h-8 w-8 rounded-full hover:bg-gray-100 flex-shrink-0"
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
+            {/* Left side buttons */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {/* File Upload Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleFileUpload}
+                className={`p-2 h-8 w-8 rounded-full flex-shrink-0 ${
+                  isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                }`}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+
+              {/* Web Search Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleWebSearch}
+                className={`p-2 h-8 w-8 rounded-full flex-shrink-0 ${
+                  isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                }`}
+              >
+                <Globe className="h-4 w-4" />
+              </Button>
+            </div>
 
             {/* Text Input */}
             <div className="flex-1 min-h-[20px] max-h-32">
@@ -63,7 +83,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false }
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Message ChatGPT..."
-                className="border-0 resize-none bg-transparent text-sm placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 p-0 min-h-[20px]"
+                className={`border-0 resize-none bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 p-0 min-h-[20px] ${
+                  isDarkMode 
+                    ? 'placeholder:text-gray-400 text-gray-200' 
+                    : 'placeholder:text-gray-400'
+                }`}
                 rows={1}
                 style={{
                   height: 'auto',
@@ -74,24 +98,16 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false }
               />
             </div>
 
-            {/* Action Buttons */}
+            {/* Right side buttons */}
             <div className="flex items-center gap-1 flex-shrink-0">
-              {/* Web Search Button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleWebSearch}
-                className="p-2 h-8 w-8 rounded-full hover:bg-gray-100"
-              >
-                <Search className="h-4 w-4" />
-              </Button>
-
               {/* Voice Input Button */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleVoiceInput}
-                className="p-2 h-8 w-8 rounded-full hover:bg-gray-100"
+                className={`p-2 h-8 w-8 rounded-full ${
+                  isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                }`}
               >
                 <Mic className="h-4 w-4" />
               </Button>
@@ -101,7 +117,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false }
                 onClick={handleSubmit}
                 disabled={!message.trim() || disabled}
                 size="sm"
-                className="p-2 h-8 w-8 rounded-full bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:opacity-50"
+                className={`p-2 h-8 w-8 rounded-full disabled:opacity-50 ${
+                  isDarkMode
+                    ? 'bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800'
+                    : 'bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100'
+                }`}
                 variant="ghost"
               >
                 <ArrowRight className="h-4 w-4" />
@@ -111,7 +131,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false }
         </div>
         
         {/* Footer Text */}
-        <div className="text-center text-xs text-gray-500 mt-3">
+        <div className={`text-center text-xs mt-3 ${
+          isDarkMode ? 'text-gray-400' : 'text-gray-500'
+        }`}>
           ChatGPT can make mistakes. Check important info.
         </div>
       </div>

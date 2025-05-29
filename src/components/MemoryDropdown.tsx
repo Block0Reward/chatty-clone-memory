@@ -8,7 +8,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-const MemoryDropdown: React.FC = () => {
+interface MemoryDropdownProps {
+  isDarkMode?: boolean;
+}
+
+const MemoryDropdown: React.FC<MemoryDropdownProps> = ({ isDarkMode = false }) => {
   const memoryOptions = [
     { id: 'short-term', name: 'Short Term' },
     { id: 'transit', name: 'Transit' },
@@ -27,16 +31,28 @@ const MemoryDropdown: React.FC = () => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="bg-white border-gray-200 text-gray-700 hover:bg-gray-50 h-10 px-4 text-sm font-medium"
+          className={`h-10 px-4 text-sm font-medium ${
+            isDarkMode
+              ? 'bg-gray-800 border-gray-600 text-gray-200 hover:bg-gray-700'
+              : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+          }`}
         >
           Memory
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-48 bg-white border border-gray-200 shadow-lg">
+      <DropdownMenuContent className={`w-48 shadow-lg ${
+        isDarkMode
+          ? 'bg-gray-800 border-gray-600'
+          : 'bg-white border-gray-200'
+      }`}>
         {memoryOptions.map((option) => (
           <DropdownMenuItem
             key={option.id}
-            className="cursor-pointer hover:bg-gray-50 p-3 text-sm"
+            className={`cursor-pointer p-3 text-sm ${
+              isDarkMode
+                ? 'hover:bg-gray-700 text-gray-200'
+                : 'hover:bg-gray-50'
+            }`}
             onClick={() => handleMemoryAction(option.id)}
           >
             {option.name}

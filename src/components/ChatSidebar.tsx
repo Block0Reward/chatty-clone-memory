@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Plus, ChevronDown, ChevronRight, MessageSquare, PanelLeftClose, PanelLeft } from 'lucide-react';
+import { Search, Plus, ChevronDown, ChevronRight, MessageSquare, PanelLeftClose, PanelLeft, FolderPlus, ChevronsDown, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -8,10 +8,17 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 interface ChatSidebarProps {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
+  isDarkMode: boolean;
+  onToggleTheme: () => void;
 }
 
-const ChatSidebar: React.FC<ChatSidebarProps> = ({ isCollapsed, onToggleCollapse }) => {
-  const [expandedFolders, setExpandedFolders] = useState<string[]>(['recent']);
+const ChatSidebar: React.FC<ChatSidebarProps> = ({ 
+  isCollapsed, 
+  onToggleCollapse, 
+  isDarkMode, 
+  onToggleTheme 
+}) => {
+  const [expandedFolders, setExpandedFolders] = useState<string[]>(['project1']);
   const [searchQuery, setSearchQuery] = useState('');
 
   const toggleFolder = (folderId: string) => {
@@ -22,37 +29,65 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ isCollapsed, onToggleCollapse
     );
   };
 
-  const folders = [
+  const expandAllFolders = () => {
+    const allFolderIds = projects.map(project => project.id);
+    setExpandedFolders(allFolderIds);
+  };
+
+  const createNewProject = () => {
+    console.log('Creating new project...');
+    // TODO: Add your project creation logic here
+  };
+
+  const projects = [
     {
-      id: 'recent',
-      name: 'Recent',
+      id: 'project1',
+      name: 'New project',
       chats: [
-        { id: '1', title: 'React Components Discussion', timestamp: 'Today' },
-        { id: '2', title: 'TypeScript Best Practices', timestamp: 'Yesterday' },
-        { id: '3', title: 'UI Design Patterns', timestamp: '2 days ago' },
+        { id: '1', title: 'Fasted Strength Training Advice', timestamp: 'Today' },
       ]
     },
     {
-      id: 'projects',
-      name: 'Projects',
-      chats: [
-        { id: '4', title: 'E-commerce App Development', timestamp: '1 week ago' },
-        { id: '5', title: 'API Integration Guide', timestamp: '2 weeks ago' },
-      ]
+      id: 'project2', 
+      name: 'My friend',
+      chats: []
     },
     {
-      id: 'learning',
-      name: 'Learning',
-      chats: [
-        { id: '6', title: 'Machine Learning Basics', timestamp: '1 month ago' },
-        { id: '7', title: 'Data Structures & Algorithms', timestamp: '1 month ago' },
-      ]
+      id: 'project3',
+      name: 'Korea',
+      chats: []
+    },
+    {
+      id: 'project4',
+      name: 'My workout',
+      chats: []
+    },
+    {
+      id: 'project5',
+      name: 'Ideas',
+      chats: []
+    },
+    {
+      id: 'project6',
+      name: 'My personal life coach an...',
+      chats: []
     }
+  ];
+
+  const allChats = [
+    { id: '2', title: 'Chat Dashboard UI Design', timestamp: 'Yesterday' },
+    { id: '3', title: 'Import Export Error Fix', timestamp: 'Yesterday' },
+    { id: '4', title: 'AI Brain Architecture Plan', timestamp: 'Previous 7 Days' },
+    { id: '5', title: 'Paederus Dermatitis Assessm...', timestamp: 'Previous 7 Days' },
+    { id: '6', title: 'Euler Protocol Risk Summary', timestamp: 'Previous 7 Days' },
+    { id: '7', title: 'Itchy Skin Reaction', timestamp: 'Previous 7 Days' },
   ];
 
   if (isCollapsed) {
     return (
-      <div className="w-14 bg-[#f7f7f8] border-r border-gray-200 flex flex-col h-screen">
+      <div className={`w-14 border-r flex flex-col h-screen ${
+        isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
+      }`}>
         <div className="p-2">
           <Button
             variant="ghost"
@@ -64,7 +99,15 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ isCollapsed, onToggleCollapse
           </Button>
         </div>
         <div className="flex-1" />
-        <div className="p-2">
+        <div className="p-2 space-y-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleTheme}
+            className="w-full h-10 p-0 hover:bg-gray-100"
+          >
+            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
           <Button
             variant="ghost"
             size="sm"
@@ -78,11 +121,17 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ isCollapsed, onToggleCollapse
   }
 
   return (
-    <div className="w-64 bg-[#f7f7f8] border-r border-gray-200 flex flex-col h-screen">
+    <div className={`w-64 border-r flex flex-col h-screen ${
+      isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
+    }`}>
       {/* Header */}
-      <div className="p-3 border-b border-gray-200">
+      <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
         <Button 
-          className="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 h-11 text-sm font-medium justify-start"
+          className={`w-full h-11 text-sm font-medium justify-start ${
+            isDarkMode 
+              ? 'bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-600' 
+              : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200'
+          }`}
           variant="outline"
         >
           <Plus className="h-4 w-4 mr-2" />
@@ -93,48 +142,77 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ isCollapsed, onToggleCollapse
       {/* Search */}
       <div className="p-3">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${
+            isDarkMode ? 'text-gray-400' : 'text-gray-400'
+          }`} />
           <Input
             placeholder="Search chats"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 bg-white border-gray-200 h-9 text-sm"
+            className={`pl-9 h-9 text-sm ${
+              isDarkMode 
+                ? 'bg-gray-800 border-gray-600 text-gray-200 placeholder:text-gray-400' 
+                : 'bg-white border-gray-200'
+            }`}
           />
         </div>
       </div>
 
-      {/* Library */}
-      <div className="px-3 py-1">
-        <Button variant="ghost" className="w-full justify-start text-sm font-medium text-gray-700 h-8">
-          Library
+      {/* Project Actions */}
+      <div className="px-3 pb-2 space-y-2">
+        <Button 
+          variant="ghost" 
+          onClick={createNewProject}
+          className={`w-full justify-start text-sm font-medium h-8 ${
+            isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+          }`}
+        >
+          <FolderPlus className="h-4 w-4 mr-2" />
+          New project
+        </Button>
+        <Button 
+          variant="ghost" 
+          onClick={expandAllFolders}
+          className={`w-full justify-start text-sm font-medium h-8 ${
+            isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+          }`}
+        >
+          <ChevronsDown className="h-4 w-4 mr-2" />
+          Expand all folders
         </Button>
       </div>
 
-      {/* Chat History */}
+      {/* Projects Section */}
       <ScrollArea className="flex-1 px-3">
         <div className="space-y-1">
-          {folders.map((folder) => (
-            <div key={folder.id}>
+          {projects.map((project) => (
+            <div key={project.id}>
               <Button
                 variant="ghost"
-                onClick={() => toggleFolder(folder.id)}
-                className="w-full justify-start text-sm font-medium text-gray-700 h-8 px-2"
+                onClick={() => toggleFolder(project.id)}
+                className={`w-full justify-start text-sm font-medium h-8 px-2 ${
+                  isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+                }`}
               >
-                {expandedFolders.includes(folder.id) ? (
+                {expandedFolders.includes(project.id) ? (
                   <ChevronDown className="h-3 w-3 mr-1" />
                 ) : (
                   <ChevronRight className="h-3 w-3 mr-1" />
                 )}
-                {folder.name}
+                {project.name}
               </Button>
               
-              {expandedFolders.includes(folder.id) && (
+              {expandedFolders.includes(project.id) && project.chats.length > 0 && (
                 <div className="ml-4 space-y-0.5">
-                  {folder.chats.map((chat) => (
+                  {project.chats.map((chat) => (
                     <Button
                       key={chat.id}
                       variant="ghost"
-                      className="w-full justify-start text-sm text-gray-600 h-8 px-2 hover:bg-gray-100"
+                      className={`w-full justify-start text-sm h-8 px-2 ${
+                        isDarkMode 
+                          ? 'text-gray-400 hover:bg-gray-800' 
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
                     >
                       <MessageSquare className="h-3 w-3 mr-2 flex-shrink-0" />
                       <div className="flex-1 text-left truncate">
@@ -146,15 +224,103 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ isCollapsed, onToggleCollapse
               )}
             </div>
           ))}
+
+          {/* See more button */}
+          <Button
+            variant="ghost"
+            className={`w-full justify-start text-sm h-8 px-2 ${
+              isDarkMode ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            ...&nbsp;&nbsp;See more
+          </Button>
+
+          {/* Chat History Section */}
+          <div className="pt-4">
+            <div className={`text-xs font-medium mb-2 px-2 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>
+              Today
+            </div>
+            {allChats.filter(chat => chat.timestamp === 'Today').map((chat) => (
+              <Button
+                key={chat.id}
+                variant="ghost"
+                className={`w-full justify-start text-sm h-8 px-2 mb-0.5 ${
+                  isDarkMode 
+                    ? 'text-gray-300 hover:bg-gray-800' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex-1 text-left truncate">
+                  <div className="truncate">{chat.title}</div>
+                </div>
+              </Button>
+            ))}
+
+            <div className={`text-xs font-medium mb-2 mt-4 px-2 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>
+              Yesterday
+            </div>
+            {allChats.filter(chat => chat.timestamp === 'Yesterday').map((chat) => (
+              <Button
+                key={chat.id}
+                variant="ghost"
+                className={`w-full justify-start text-sm h-8 px-2 mb-0.5 ${
+                  isDarkMode 
+                    ? 'text-gray-300 hover:bg-gray-800' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex-1 text-left truncate">
+                  <div className="truncate">{chat.title}</div>
+                </div>
+              </Button>
+            ))}
+
+            <div className={`text-xs font-medium mb-2 mt-4 px-2 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>
+              Previous 7 Days
+            </div>
+            {allChats.filter(chat => chat.timestamp === 'Previous 7 Days').map((chat) => (
+              <Button
+                key={chat.id}
+                variant="ghost"
+                className={`w-full justify-start text-sm h-8 px-2 mb-0.5 ${
+                  isDarkMode 
+                    ? 'text-gray-300 hover:bg-gray-800' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex-1 text-left truncate">
+                  <div className="truncate">{chat.title}</div>
+                </div>
+              </Button>
+            ))}
+          </div>
         </div>
       </ScrollArea>
 
-      {/* Collapse Button */}
-      <div className="p-3 border-t border-gray-200">
+      {/* Footer with theme toggle and collapse */}
+      <div className={`p-3 border-t space-y-2 ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+        <Button
+          variant="ghost"
+          onClick={onToggleTheme}
+          className={`w-full justify-start text-sm h-8 ${
+            isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+          }`}
+        >
+          {isDarkMode ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
+          {isDarkMode ? 'Light mode' : 'Dark mode'}
+        </Button>
         <Button
           variant="ghost"
           onClick={onToggleCollapse}
-          className="w-full justify-start text-sm text-gray-700 h-8"
+          className={`w-full justify-start text-sm h-8 ${
+            isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700'
+          }`}
         >
           <PanelLeftClose className="h-4 w-4 mr-2" />
           Close sidebar

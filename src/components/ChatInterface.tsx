@@ -15,6 +15,7 @@ interface Message {
 
 const ChatInterface: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -27,6 +28,10 @@ const ChatInterface: React.FC = () => {
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const handleToggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
   };
 
   const handleSendMessage = async (content: string) => {
@@ -56,25 +61,32 @@ const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-white">
+    <div className={`flex h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
       {/* Sidebar */}
-      <ChatSidebar isCollapsed={isCollapsed} onToggleCollapse={handleToggleCollapse} />
+      <ChatSidebar 
+        isCollapsed={isCollapsed} 
+        onToggleCollapse={handleToggleCollapse}
+        isDarkMode={isDarkMode}
+        onToggleTheme={handleToggleTheme}
+      />
       
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="border-b border-gray-200 bg-white p-4">
+        <div className={`border-b p-4 ${
+          isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-white'
+        }`}>
           <div className="flex items-center justify-between">
-            <ModelDropdown />
-            <MemoryDropdown />
+            <ModelDropdown isDarkMode={isDarkMode} />
+            <MemoryDropdown isDarkMode={isDarkMode} />
           </div>
         </div>
 
         {/* Chat History */}
-        <ChatHistory messages={messages} />
+        <ChatHistory messages={messages} isDarkMode={isDarkMode} />
 
         {/* Chat Input */}
-        <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} />
+        <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} isDarkMode={isDarkMode} />
       </div>
     </div>
   );

@@ -9,7 +9,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-const ModelDropdown: React.FC = () => {
+interface ModelDropdownProps {
+  isDarkMode?: boolean;
+}
+
+const ModelDropdown: React.FC<ModelDropdownProps> = ({ isDarkMode = false }) => {
   const [selectedModel, setSelectedModel] = useState('GPT-4');
 
   const models = [
@@ -24,22 +28,38 @@ const ModelDropdown: React.FC = () => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="bg-white border-gray-200 text-gray-700 hover:bg-gray-50 h-10 px-4 text-sm font-medium"
+          className={`h-10 px-4 text-sm font-medium ${
+            isDarkMode
+              ? 'bg-gray-800 border-gray-600 text-gray-200 hover:bg-gray-700'
+              : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+          }`}
         >
           {selectedModel}
           <ChevronDown className="h-4 w-4 ml-2" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-white border border-gray-200 shadow-lg">
+      <DropdownMenuContent className={`w-56 shadow-lg ${
+        isDarkMode
+          ? 'bg-gray-800 border-gray-600'
+          : 'bg-white border-gray-200'
+      }`}>
         {models.map((model) => (
           <DropdownMenuItem
             key={model.id}
-            className="cursor-pointer hover:bg-gray-50 p-3"
+            className={`cursor-pointer p-3 ${
+              isDarkMode
+                ? 'hover:bg-gray-700 text-gray-200'
+                : 'hover:bg-gray-50'
+            }`}
             onClick={() => setSelectedModel(model.name)}
           >
             <div>
-              <div className="font-medium text-gray-900">{model.name}</div>
-              <div className="text-sm text-gray-500">{model.description}</div>
+              <div className={`font-medium ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                {model.name}
+              </div>
+              <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                {model.description}
+              </div>
             </div>
           </DropdownMenuItem>
         ))}
