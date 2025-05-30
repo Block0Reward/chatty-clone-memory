@@ -54,32 +54,34 @@ const MemoryDropdown: React.FC<MemoryDropdownProps> = ({ isDarkMode = false }) =
     // TODO: Add your memory management logic here
   };
 
+  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal transition-all duration-200 hover:shadow-sm focus:ring-2 focus:ring-offset-2 ${
+    isDarkMode 
+      ? 'text-gray-300 hover:bg-gray-800/50 hover:border-gray-600 focus:ring-gray-500 border-gray-700' 
+      : 'text-gray-700 hover:bg-gray-50 hover:border-gray-300 focus:ring-gray-400 border-gray-200'
+  }`;
+
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className={`h-10 px-4 text-sm font-medium rounded-full shadow-sm transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
-            isDarkMode
-              ? 'bg-gray-800 border-gray-600 text-gray-200 hover:bg-gray-700 hover:shadow-md focus:ring-gray-500'
-              : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:shadow-md focus:ring-gray-400'
-          }`}
+          className={buttonBaseClasses}
         >
-          <Brain className="h-4 w-4 mr-2" />
-          Memory
-          <ChevronDown className={`h-3 w-3 ml-2 transition-transform duration-200 ${
+          <Brain className="h-4 w-4 mr-3" />
+          <span className="flex-1 text-left">Memory</span>
+          <ChevronDown className={`h-4 w-4 ml-2 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
-        className={`w-64 shadow-lg border-0 rounded-lg animate-in fade-in-0 zoom-in-95 duration-200 ${
+        className={`w-64 shadow-lg border-0 rounded-lg animate-in fade-in-0 zoom-in-95 duration-200 z-50 ${
           isDarkMode
             ? 'bg-gray-800 border-gray-600'
             : 'bg-white border-gray-200'
         }`}
-        align="end"
-        sideOffset={8}
+        align="start"
+        sideOffset={4}
       >
         {memoryOptions.map((option) => {
           const IconComponent = option.icon;

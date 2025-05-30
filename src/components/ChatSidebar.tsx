@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Plus, PanelLeft, Sun, Moon, Pen, FolderPlus } from 'lucide-react';
+import { PanelLeft, Sun, Moon, Pen, FolderPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
@@ -115,7 +115,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
             </Tooltip>
           </div>
           
-          {/* New Chat and New Project buttons */}
+          {/* Action buttons in collapsed view */}
           <div className="px-2 space-y-2">
             <Tooltip>
               <TooltipTrigger asChild>
