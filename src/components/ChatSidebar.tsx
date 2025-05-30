@@ -190,33 +190,42 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
     <div className={`w-64 border-r flex flex-col h-screen transition-all duration-200 ease-in-out ${
       isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
     }`}>
-      <SidebarHeader
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onCreateNewChat={createNewChat}
-        onCreateNewProject={createNewProject}
-        isDarkMode={isDarkMode}
-      />
-
-      <ScrollArea className="flex-1 px-3">
-        <ProjectSection
-          projects={projects}
-          expandedFolders={expandedFolders}
-          onToggleFolder={toggleFolder}
+      {/* Fixed Header - Action buttons and search */}
+      <div className="flex-shrink-0">
+        <SidebarHeader
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onCreateNewChat={createNewChat}
+          onCreateNewProject={createNewProject}
           isDarkMode={isDarkMode}
         />
+      </div>
 
-        <ChatHistorySection
-          chats={allChats}
+      {/* Scrollable middle section - Projects and chat history */}
+      <div className="flex-1 min-h-0">
+        <ScrollArea className="h-full px-3">
+          <ProjectSection
+            projects={projects}
+            expandedFolders={expandedFolders}
+            onToggleFolder={toggleFolder}
+            isDarkMode={isDarkMode}
+          />
+
+          <ChatHistorySection
+            chats={allChats}
+            isDarkMode={isDarkMode}
+          />
+        </ScrollArea>
+      </div>
+
+      {/* Fixed Footer - Theme toggle and collapse */}
+      <div className="flex-shrink-0">
+        <SidebarFooter
           isDarkMode={isDarkMode}
+          onToggleTheme={onToggleTheme}
+          onToggleCollapse={onToggleCollapse}
         />
-      </ScrollArea>
-
-      <SidebarFooter
-        isDarkMode={isDarkMode}
-        onToggleTheme={onToggleTheme}
-        onToggleCollapse={onToggleCollapse}
-      />
+      </div>
     </div>
   );
 };

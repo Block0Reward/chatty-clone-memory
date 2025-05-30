@@ -105,7 +105,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Message ChatGPT..."
-                className={`border-0 resize-none bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 p-0 min-h-[40px] max-h-[200px] overflow-y-auto rounded-3xl ${
+                className={`border-0 resize-none bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 min-h-[40px] max-h-[200px] overflow-y-auto rounded-3xl px-4 py-2 ${
                   isDarkMode 
                     ? 'placeholder:text-gray-400 text-gray-200' 
                     : 'placeholder:text-gray-400'
@@ -114,6 +114,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
                 style={{
                   height: '40px',
                   lineHeight: '1.5',
+                  paddingLeft: '16px',
+                  paddingRight: '16px',
                 }}
                 disabled={disabled}
               />
