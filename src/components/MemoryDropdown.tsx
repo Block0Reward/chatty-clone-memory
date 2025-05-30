@@ -54,22 +54,22 @@ const MemoryDropdown: React.FC<MemoryDropdownProps> = ({ isDarkMode = false }) =
     // TODO: Add your memory management logic here
   };
 
-  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal transition-all duration-200 hover:shadow-sm focus:ring-2 focus:ring-offset-2 ${
+  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
     isDarkMode 
-      ? 'text-gray-300 hover:bg-gray-800/50 hover:border-gray-600 focus:ring-gray-500 border-gray-700' 
-      : 'text-gray-700 hover:bg-gray-50 hover:border-gray-300 focus:ring-gray-400 border-gray-200'
+      ? 'text-gray-300 bg-gray-800/40 hover:bg-gray-700/60 border-0' 
+      : 'text-gray-700 bg-gray-100/60 hover:bg-gray-200/80 border-0'
   }`;
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="outline"
+          variant="ghost"
           className={buttonBaseClasses}
         >
-          <Brain className="h-4 w-4 mr-3" />
+          <Brain className="h-4 w-4 mr-3 flex-shrink-0" />
           <span className="flex-1 text-left">Memory</span>
-          <ChevronDown className={`h-4 w-4 ml-2 transition-transform duration-200 ${
+          <ChevronDown className={`h-4 w-4 ml-2 flex-shrink-0 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`} />
         </Button>

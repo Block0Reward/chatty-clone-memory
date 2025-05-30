@@ -1,8 +1,6 @@
 
 import React, { useState } from 'react';
 import ChatSidebar from './ChatSidebar';
-import ModelDropdown from './ModelDropdown';
-import MemoryDropdown from './MemoryDropdown';
 import ChatHistory from './ChatHistory';
 import ChatInput from './ChatInput';
 
@@ -72,16 +70,6 @@ const ChatInterface: React.FC = () => {
       
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className={`border-b p-4 ${
-          isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-white'
-        }`}>
-          <div className="flex items-center justify-between">
-            <ModelDropdown isDarkMode={isDarkMode} />
-            <MemoryDropdown isDarkMode={isDarkMode} />
-          </div>
-        </div>
-
         {/* Chat History */}
         <ChatHistory messages={messages} isDarkMode={isDarkMode} />
 

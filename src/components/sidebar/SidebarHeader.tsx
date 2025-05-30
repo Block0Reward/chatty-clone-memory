@@ -22,24 +22,24 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   onCreateNewProject,
   isDarkMode
 }) => {
-  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal transition-all duration-200 hover:shadow-sm focus:ring-2 focus:ring-offset-2 ${
+  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
     isDarkMode 
-      ? 'text-gray-300 hover:bg-gray-800/50 hover:border-gray-600 focus:ring-gray-500 border-gray-700' 
-      : 'text-gray-700 hover:bg-gray-50 hover:border-gray-300 focus:ring-gray-400 border-gray-200'
+      ? 'text-gray-300 bg-gray-800/40 hover:bg-gray-700/60 border-0' 
+      : 'text-gray-700 bg-gray-100/60 hover:bg-gray-200/80 border-0'
   }`;
 
   return (
-    <div className="p-3 space-y-4">
+    <div className="p-3 space-y-3">
       {/* Action Buttons Group */}
       <div className="space-y-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button 
               onClick={onCreateNewChat}
-              variant="outline"
+              variant="ghost"
               className={buttonBaseClasses}
             >
-              <Pen className="h-4 w-4 mr-3" />
+              <Pen className="h-4 w-4 mr-3 flex-shrink-0" />
               New chat
             </Button>
           </TooltipTrigger>
@@ -51,11 +51,11 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <Button 
-              variant="outline" 
+              variant="ghost" 
               onClick={onCreateNewProject}
               className={buttonBaseClasses}
             >
-              <FolderPlus className="h-4 w-4 mr-3" />
+              <FolderPlus className="h-4 w-4 mr-3 flex-shrink-0" />
               New project
             </Button>
           </TooltipTrigger>
@@ -64,10 +64,10 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({
           </TooltipContent>
         </Tooltip>
 
-        <div className="flex items-center space-x-2">
+        <div className="space-y-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex-1">
+              <div>
                 <MemoryDropdown isDarkMode={isDarkMode} />
               </div>
             </TooltipTrigger>
@@ -78,7 +78,7 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex-1">
+              <div>
                 <ModelDropdown isDarkMode={isDarkMode} />
               </div>
             </TooltipTrigger>

@@ -17,8 +17,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
   // Auto-resize textarea
   useEffect(() => {
     if (textareaRef.current) {
+      // Reset height to auto to get the correct scrollHeight
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 128)}px`;
+      // Set height based on scrollHeight with min and max constraints
+      const newHeight = Math.min(Math.max(textareaRef.current.scrollHeight, 40), 200);
+      textareaRef.current.style.height = `${newHeight}px`;
     }
   }, [message]);
 
@@ -26,6 +29,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
     if (message.trim() && !disabled) {
       onSendMessage(message.trim());
       setMessage('');
+      // Reset textarea height after clearing
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+        textareaRef.current.style.height = '40px';
+      }
     }
   };
 
@@ -90,30 +98,29 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = false, 
             </div>
 
             {/* Text Input */}
-            <div className="flex-1 min-h-[20px] max-h-32">
+            <div className="flex-1 min-w-0">
               <Textarea
                 ref={textareaRef}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Message ChatGPT..."
-                className={`border-0 resize-none bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 p-0 min-h-[20px] overflow-y-auto ${
+                className={`border-0 resize-none bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 p-0 min-h-[40px] max-h-[200px] overflow-y-auto rounded-3xl ${
                   isDarkMode 
                     ? 'placeholder:text-gray-400 text-gray-200' 
                     : 'placeholder:text-gray-400'
                 }`}
                 rows={1}
                 style={{
-                  height: 'auto',
-                  minHeight: '20px',
-                  maxHeight: '128px',
+                  height: '40px',
+                  lineHeight: '1.5',
                 }}
                 disabled={disabled}
               />
             </div>
 
             {/* Right side buttons */}
-            <div className="flex items-center gap-1 flex-shrink-0">
+            <div className="flex items-end gap-1 flex-shrink-0">
               {/* Voice Input Button */}
               <Button
                 variant="ghost"
