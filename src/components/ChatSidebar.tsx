@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { Plus, PanelLeft, Sun, Moon } from 'lucide-react';
+import { Plus, PanelLeft, Sun, Moon, Pen, FolderPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import SidebarHeader from './sidebar/SidebarHeader';
 import ProjectSection from './sidebar/ProjectSection';
 import ChatHistorySection from './sidebar/ChatHistorySection';
@@ -88,55 +89,105 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
 
   if (isCollapsed) {
     return (
-      <div className={`w-14 border-r flex flex-col h-screen ${
-        isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
-      }`}>
-        <div className="p-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onToggleCollapse}
-            className={`w-full h-10 p-0 ${
-              isDarkMode 
-                ? 'hover:bg-gray-700 text-gray-300' 
-                : 'hover:bg-gray-100 text-gray-600'
-            }`}
-          >
-            <PanelLeft className="h-4 w-4" />
-          </Button>
+      <TooltipProvider>
+        <div className={`w-14 border-r flex flex-col h-screen transition-all duration-200 ease-in-out ${
+          isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
+        }`}>
+          <div className="p-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onToggleCollapse}
+                  className={`w-full h-10 p-0 transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
+                    isDarkMode 
+                      ? 'hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
+                      : 'hover:bg-gray-100 text-gray-600 focus:ring-gray-400'
+                  }`}
+                >
+                  <PanelLeft className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>Expand sidebar</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+          
+          {/* New Chat and New Project buttons */}
+          <div className="px-2 space-y-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={createNewChat}
+                  className={`w-full h-10 p-0 transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
+                    isDarkMode 
+                      ? 'hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
+                      : 'hover:bg-gray-100 text-gray-600 focus:ring-gray-400'
+                  }`}
+                >
+                  <Pen className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>New chat</p>
+              </TooltipContent>
+            </Tooltip>
+            
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={createNewProject}
+                  className={`w-full h-10 p-0 transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
+                    isDarkMode 
+                      ? 'hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
+                      : 'hover:bg-gray-100 text-gray-600 focus:ring-gray-400'
+                  }`}
+                >
+                  <FolderPlus className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>New project</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+          
+          <div className="flex-1" />
+          
+          <div className="p-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onToggleTheme}
+                  className={`w-full h-10 p-0 transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
+                    isDarkMode 
+                      ? 'hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
+                      : 'hover:bg-gray-100 text-gray-600 focus:ring-gray-400'
+                  }`}
+                >
+                  {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>{isDarkMode ? 'Light mode' : 'Dark mode'}</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </div>
-        <div className="flex-1" />
-        <div className="p-2 space-y-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onToggleTheme}
-            className={`w-full h-10 p-0 ${
-              isDarkMode 
-                ? 'hover:bg-gray-700 text-gray-300' 
-                : 'hover:bg-gray-100 text-gray-600'
-            }`}
-          >
-            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`w-full h-10 p-0 ${
-              isDarkMode 
-                ? 'hover:bg-gray-700 text-gray-300' 
-                : 'hover:bg-gray-100 text-gray-600'
-            }`}
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+      </TooltipProvider>
     );
   }
 
   return (
-    <div className={`w-64 border-r flex flex-col h-screen ${
+    <div className={`w-64 border-r flex flex-col h-screen transition-all duration-200 ease-in-out ${
       isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
     }`}>
       <SidebarHeader

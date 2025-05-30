@@ -33,30 +33,30 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
           <Button
             variant="ghost"
             onClick={() => onToggleFolder(project.id)}
-            className={`w-full justify-start text-sm font-medium h-8 px-2 ${
+            className={`w-full justify-start text-sm font-medium h-8 px-2 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
               isDarkMode 
-                ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100 focus:ring-gray-500' 
+                : 'text-gray-700 hover:bg-gray-100 focus:ring-gray-400'
             }`}
           >
             {expandedFolders.includes(project.id) ? (
-              <ChevronDown className="h-3 w-3 mr-1" />
+              <ChevronDown className="h-3 w-3 mr-1 transition-transform duration-200" />
             ) : (
-              <ChevronRight className="h-3 w-3 mr-1" />
+              <ChevronRight className="h-3 w-3 mr-1 transition-transform duration-200" />
             )}
             {project.name}
           </Button>
           
           {expandedFolders.includes(project.id) && project.chats.length > 0 && (
-            <div className="ml-4 space-y-0.5">
+            <div className="ml-4 space-y-0.5 animate-in slide-in-from-top-1 duration-200">
               {project.chats.map((chat) => (
                 <Button
                   key={chat.id}
                   variant="ghost"
-                  className={`w-full justify-start text-sm h-8 px-2 ${
+                  className={`w-full justify-start text-sm h-8 px-2 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
                     isDarkMode 
-                      ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200' 
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200 focus:ring-gray-500' 
+                      : 'text-gray-600 hover:bg-gray-100 focus:ring-gray-400'
                   }`}
                 >
                   <MessageSquare className="h-3 w-3 mr-2 flex-shrink-0" />
@@ -73,10 +73,10 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({
       {/* See more button */}
       <Button
         variant="ghost"
-        className={`w-full justify-start text-sm h-8 px-2 ${
+        className={`w-full justify-start text-sm h-8 px-2 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
           isDarkMode 
-            ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200' 
-            : 'text-gray-600 hover:bg-gray-100'
+            ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200 focus:ring-gray-500' 
+            : 'text-gray-600 hover:bg-gray-100 focus:ring-gray-400'
         }`}
       >
         ...&nbsp;&nbsp;See more
