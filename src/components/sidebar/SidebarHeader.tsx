@@ -4,7 +4,6 @@ import { Search, Pen, FolderPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import ModelDropdown from '../ModelDropdown';
 import MemoryDropdown from '../MemoryDropdown';
 
 interface SidebarHeaderProps {
@@ -22,10 +21,10 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   onCreateNewProject,
   isDarkMode
 }) => {
-  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
+  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal px-3 py-2 rounded-lg transition-all duration-200 hover:shadow-sm focus:ring-2 focus:ring-offset-2 ${
     isDarkMode 
-      ? 'text-gray-300 bg-gray-800/40 hover:bg-gray-700/60 border-0' 
-      : 'text-gray-700 bg-gray-100/60 hover:bg-gray-200/80 border-0'
+      ? 'text-gray-300 bg-gray-800/30 hover:bg-gray-700/50 border border-gray-700/50 hover:border-gray-600 focus:ring-gray-500' 
+      : 'text-gray-700 bg-gray-50/50 hover:bg-gray-100/80 border border-gray-200/50 hover:border-gray-300 focus:ring-gray-400'
   }`;
 
   return (
@@ -64,29 +63,16 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({
           </TooltipContent>
         </Tooltip>
 
-        <div className="space-y-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div>
-                <MemoryDropdown isDarkMode={isDarkMode} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>Manage AI memory</p>
-            </TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div>
-                <ModelDropdown isDarkMode={isDarkMode} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>Select AI model</p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div>
+              <MemoryDropdown isDarkMode={isDarkMode} />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            <p>Manage AI memory</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {/* Search */}
