@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, ChevronRight } from 'lucide-react';
 import {
   Popover,
   PopoverContent,
@@ -26,15 +26,26 @@ const ChatHistorySection: React.FC<ChatHistorySectionProps> = ({
   activeChat
 }) => {
   const [hoveredChat, setHoveredChat] = useState<string | null>(null);
+  const [showProjectSubmenu, setShowProjectSubmenu] = useState<string | null>(null);
   const timeGroups = ['Today', 'Yesterday', 'Previous 7 Days'];
+
+  // Sample projects for the submenu
+  const projects = [
+    { id: 'project1', name: 'My friend' },
+    { id: 'project2', name: 'Korea' },
+    { id: 'project3', name: 'My workout' },
+    { id: 'project4', name: 'Ideas' },
+    { id: 'project5', name: 'Onchains' },
+  ];
 
   const handleRenameChat = (chatId: string) => {
     console.log('Rename chat:', chatId);
     // TODO: Implement rename functionality
   };
 
-  const handleAddChatToProject = (chatId: string) => {
-    console.log('Add chat to project:', chatId);
+  const handleAddChatToProject = (chatId: string, projectId: string) => {
+    console.log('Add chat to project:', chatId, projectId);
+    setShowProjectSubmenu(null);
     // TODO: Implement add to project functionality
   };
 
@@ -102,33 +113,87 @@ const ChatHistorySection: React.FC<ChatHistorySectionProps> = ({
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent 
-                      className={`w-48 p-1 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`} 
+                      className={`w-48 p-1 z-50 ${
+                        isDarkMode 
+                          ? 'bg-gray-800 border-gray-600 shadow-lg' 
+                          : 'bg-white border-gray-200 shadow-lg'
+                      }`} 
                       align="start"
                     >
                       <Button
                         variant="ghost"
-                        className="w-full justify-start text-sm h-8 px-2"
+                        className={`w-full justify-start text-sm h-8 px-2 ${
+                          isDarkMode 
+                            ? 'text-gray-200 hover:bg-gray-700 hover:text-white' 
+                            : 'text-gray-700 hover:bg-gray-100'
+                        }`}
                         onClick={() => handleRenameChat(chat.id)}
                       >
                         Rename
                       </Button>
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-start text-sm h-8 px-2"
-                        onClick={() => handleAddChatToProject(chat.id)}
+                      
+                      <div 
+                        className="relative"
+                        onMouseEnter={() => setShowProjectSubmenu(chat.id)}
+                        onMouseLeave={() => setShowProjectSubmenu(null)}
                       >
-                        Add to project
-                      </Button>
+                        <Button
+                          variant="ghost"
+                          className={`w-full justify-between text-sm h-8 px-2 ${
+                            isDarkMode 
+                              ? 'text-gray-200 hover:bg-gray-700 hover:text-white' 
+                              : 'text-gray-700 hover:bg-gray-100'
+                          }`}
+                        >
+                          Add to project
+                          <ChevronRight className="h-3 w-3" />
+                        </Button>
+                        
+                        {/* Project submenu */}
+                        {showProjectSubmenu === chat.id && (
+                          <div 
+                            className={`absolute left-full top-0 ml-1 w-48 p-1 rounded-md border z-50 ${
+                              isDarkMode 
+                                ? 'bg-gray-800 border-gray-600 shadow-lg' 
+                                : 'bg-white border-gray-200 shadow-lg'
+                            }`}
+                          >
+                            {projects.map((project) => (
+                              <Button
+                                key={project.id}
+                                variant="ghost"
+                                className={`w-full justify-start text-sm h-8 px-2 ${
+                                  isDarkMode 
+                                    ? 'text-gray-200 hover:bg-gray-700 hover:text-white' 
+                                    : 'text-gray-700 hover:bg-gray-100'
+                                }`}
+                                onClick={() => handleAddChatToProject(chat.id, project.id)}
+                              >
+                                {project.name}
+                              </Button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      
                       <Button
                         variant="ghost"
-                        className="w-full justify-start text-sm h-8 px-2"
+                        className={`w-full justify-start text-sm h-8 px-2 ${
+                          isDarkMode 
+                            ? 'text-gray-200 hover:bg-gray-700 hover:text-white' 
+                            : 'text-gray-700 hover:bg-gray-100'
+                        }`}
                         onClick={() => handleArchiveChat(chat.id)}
                       >
                         Archive
                       </Button>
                       <Button
                         variant="ghost"
-                        className="w-full justify-start text-sm h-8 px-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950"
+                        className={`w-full justify-start text-sm h-8 px-2 ${
+                          isDarkMode 
+                            ? 'text-red-400 hover:text-red-300 hover:bg-red-900/20' 
+                            : 'text-red-600 hover:text-red-700 hover:bg-red-50'
+                        }`}
                         onClick={() => handleDeleteChat(chat.id)}
                       >
                         Delete
