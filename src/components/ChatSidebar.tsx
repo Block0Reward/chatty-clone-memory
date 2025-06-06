@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { PanelLeft, Sun, Moon, Pen, FolderPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,6 +23,8 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
 }) => {
   const [expandedFolders, setExpandedFolders] = useState<string[]>(['project1']);
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeChat, setActiveChat] = useState<string>('1'); // Example active chat
+  const [activeProject, setActiveProject] = useState<string>('project1'); // Example active project
 
   const toggleFolder = (folderId: string) => {
     setExpandedFolders(prev => 
@@ -209,11 +210,14 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
             expandedFolders={expandedFolders}
             onToggleFolder={toggleFolder}
             isDarkMode={isDarkMode}
+            activeChat={activeChat}
+            activeProject={activeProject}
           />
 
           <ChatHistorySection
             chats={allChats}
             isDarkMode={isDarkMode}
+            activeChat={activeChat}
           />
         </ScrollArea>
       </div>
