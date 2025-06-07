@@ -89,6 +89,22 @@ const AgentsSidebar: React.FC<AgentsSidebarProps> = ({ isOpen, onClose, isDarkMo
         </div>
       </div>
 
+      {/* Logs Toggle Button */}
+      <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+        <Button
+          variant={showLogs ? "default" : "outline"}
+          onClick={() => setShowLogs(!showLogs)}
+          className={`w-full justify-start text-sm h-8 ${
+            isDarkMode 
+              ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
+              : 'text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          <FileText className="h-4 w-4 mr-2" />
+          {showLogs ? 'Show Agents' : 'Show Logs'}
+        </Button>
+      </div>
+
       {/* Content */}
       <div className="flex-1 h-full">
         <ScrollArea className="h-full px-3">
@@ -145,22 +161,6 @@ const AgentsSidebar: React.FC<AgentsSidebarProps> = ({ isOpen, onClose, isDarkMo
             </div>
           )}
         </ScrollArea>
-      </div>
-
-      {/* Footer */}
-      <div className={`p-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-        <Button
-          variant="ghost"
-          onClick={() => setShowLogs(!showLogs)}
-          className={`w-full justify-start text-sm h-8 ${
-            isDarkMode 
-              ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          <FileText className="h-4 w-4 mr-2" />
-          {showLogs ? 'Show Agents' : 'Show Logs'}
-        </Button>
       </div>
     </div>
   );

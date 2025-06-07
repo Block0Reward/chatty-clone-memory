@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { Pen, FolderPlus, Users, Sun, Moon } from 'lucide-react';
+import { Users, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
 import SidebarHeader from './sidebar/SidebarHeader';
 import ProjectSection from './sidebar/ProjectSection';
 import ChatHistorySection from './sidebar/ChatHistorySection';
@@ -23,6 +24,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const [activeChat, setActiveChat] = useState<string>('1');
   const [activeProject, setActiveProject] = useState<string>('project1');
   const [isAgentsSidebarOpen, setIsAgentsSidebarOpen] = useState(false);
+  const [agentsEnabled, setAgentsEnabled] = useState(false);
 
   const toggleFolder = (folderId: string) => {
     setExpandedFolders(prev => 
@@ -103,6 +105,29 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
           />
         </div>
 
+        {/* Agents Button with Switch */}
+        <div className={`px-3 pb-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              onClick={() => setIsAgentsSidebarOpen(true)}
+              className={`flex-1 justify-start text-sm h-8 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
+                isDarkMode 
+                  ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100 focus:ring-gray-500' 
+                  : 'text-gray-700 hover:bg-gray-100 focus:ring-gray-400'
+              }`}
+            >
+              <Users className="h-4 w-4 mr-2" />
+              Agents
+            </Button>
+            <Switch
+              checked={agentsEnabled}
+              onCheckedChange={setAgentsEnabled}
+              className="ml-2"
+            />
+          </div>
+        </div>
+
         {/* Scrollable middle section */}
         <div className="flex-1 min-h-0">
           <ScrollArea className="h-full px-3">
@@ -123,32 +148,18 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
           </ScrollArea>
         </div>
 
-        {/* Footer with action buttons */}
-        <div className={`p-3 border-t space-y-2 ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-          <Button
-            variant="ghost"
-            onClick={() => setIsAgentsSidebarOpen(true)}
-            className={`w-full justify-start text-sm h-8 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
-              isDarkMode 
-                ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100 focus:ring-gray-500' 
-                : 'text-gray-700 hover:bg-gray-100 focus:ring-gray-400'
-            }`}
-          >
-            <Users className="h-4 w-4 mr-2" />
-            Agents
-          </Button>
-          
-          <Button
-            variant="ghost"
-            onClick={onToggleTheme}
-            className={`w-full justify-center text-sm h-8 p-0 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
-              isDarkMode 
-                ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100 focus:ring-gray-500' 
-                : 'text-gray-700 hover:bg-gray-100 focus:ring-gray-400'
-            }`}
-          >
-            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </Button>
+        {/* Footer with theme switcher */}
+        <div className={`p-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Sun className="h-4 w-4" />
+              <Switch
+                checked={isDarkMode}
+                onCheckedChange={onToggleTheme}
+              />
+              <Moon className="h-4 w-4" />
+            </div>
+          </div>
         </div>
       </div>
 

@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import ChatSidebar from './ChatSidebar';
 import ChatHistory from './ChatHistory';
 import ChatInput from './ChatInput';
 
@@ -11,9 +10,11 @@ interface Message {
   timestamp: string;
 }
 
-const ChatInterface: React.FC = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+interface ChatInterfaceProps {
+  isDarkMode: boolean;
+}
+
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ isDarkMode }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -23,14 +24,6 @@ const ChatInterface: React.FC = () => {
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleToggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const handleToggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   const handleSendMessage = async (content: string) => {
     // Add user message
@@ -59,23 +52,12 @@ const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className={`flex h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
-      {/* Sidebar */}
-      <ChatSidebar 
-        isCollapsed={isCollapsed} 
-        onToggleCollapse={handleToggleCollapse}
-        isDarkMode={isDarkMode}
-        onToggleTheme={handleToggleTheme}
-      />
-      
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Chat History */}
-        <ChatHistory messages={messages} isDarkMode={isDarkMode} />
+    <div className="flex-1 flex flex-col">
+      {/* Chat History */}
+      <ChatHistory messages={messages} isDarkMode={isDarkMode} />
 
-        {/* Chat Input */}
-        <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} isDarkMode={isDarkMode} />
-      </div>
+      {/* Chat Input */}
+      <ChatInput onSendMessage={handleSendMessage} disabled={isLoading} isDarkMode={isDarkMode} />
     </div>
   );
 };
