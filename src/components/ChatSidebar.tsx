@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Users, Sun, Moon } from 'lucide-react';
+import { Users, Sun, Moon, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Switch } from '@/components/ui/switch';
@@ -85,25 +85,36 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
     { id: '7', title: 'Itchy Skin Reaction', timestamp: 'Previous 7 Days' },
   ];
 
+  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
+    isDarkMode 
+      ? 'text-gray-300 bg-gray-800/40 hover:bg-gray-700/60 border-0' 
+      : 'text-gray-700 bg-gray-100/60 hover:bg-gray-200/80 border-0'
+  }`;
+
   return (
     <>
       <div className={`w-64 border-r flex flex-col h-screen ${
         isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
       }`}>
-        {/* Theme Toggle at top */}
+        {/* Top row: Theme Toggle and System Monitor */}
         <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-          <div className="flex items-center space-x-2">
-            <Sun className="h-4 w-4" />
-            <Switch
-              checked={isDarkMode}
-              onCheckedChange={onToggleTheme}
-            />
-            <Moon className="h-4 w-4" />
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onToggleTheme}
+              className={`h-8 w-8 rounded-lg ${
+                isDarkMode 
+                  ? 'text-gray-300 hover:bg-gray-700/60' 
+                  : 'text-gray-700 hover:bg-gray-200/80'
+              }`}
+            >
+              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            
+            <SystemMonitor isDarkMode={isDarkMode} />
           </div>
         </div>
-
-        {/* System Monitor */}
-        <SystemMonitor isDarkMode={isDarkMode} />
 
         {/* Header with search and action buttons */}
         <div className="flex-shrink-0">
@@ -116,16 +127,12 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
           />
         </div>
 
-        {/* Agents Button with Switch */}
+        {/* Agents Button */}
         <div className={`px-3 pb-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
-              className={`flex-1 justify-start text-sm h-10 font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
-                isDarkMode 
-                  ? 'text-gray-300 bg-gray-800/40 hover:bg-gray-700/60 border-0' 
-                  : 'text-gray-700 bg-gray-100/60 hover:bg-gray-200/80 border-0'
-              }`}
+              className={buttonBaseClasses}
             >
               <Users className="h-4 w-4 mr-3 flex-shrink-0" />
               Agents
@@ -138,8 +145,8 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
           </div>
         </div>
 
-        {/* Scrollable middle section */}
-        <div className="flex-1 min-h-0">
+        {/* Scrollable middle section with spacing */}
+        <div className="flex-1 min-h-0 pt-4">
           <ScrollArea className="h-full px-3">
             <ProjectSection
               projects={projects}
@@ -150,11 +157,13 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
               activeProject={activeProject}
             />
 
-            <ChatHistorySection
-              chats={allChats}
-              isDarkMode={isDarkMode}
-              activeChat={activeChat}
-            />
+            <div className="mt-6">
+              <ChatHistorySection
+                chats={allChats}
+                isDarkMode={isDarkMode}
+                activeChat={activeChat}
+              />
+            </div>
           </ScrollArea>
         </div>
       </div>
