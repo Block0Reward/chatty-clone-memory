@@ -1,30 +1,28 @@
+
 import React, { useState } from 'react';
-import { PanelLeft, Sun, Moon, Pen, FolderPlus } from 'lucide-react';
+import { Pen, FolderPlus, Users, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import SidebarHeader from './sidebar/SidebarHeader';
 import ProjectSection from './sidebar/ProjectSection';
 import ChatHistorySection from './sidebar/ChatHistorySection';
-import SidebarFooter from './sidebar/SidebarFooter';
+import SystemMonitor from './monitoring/SystemMonitor';
+import AgentsSidebar from './agents/AgentsSidebar';
 
 interface ChatSidebarProps {
-  isCollapsed: boolean;
-  onToggleCollapse: () => void;
   isDarkMode: boolean;
   onToggleTheme: () => void;
 }
 
 const ChatSidebar: React.FC<ChatSidebarProps> = ({ 
-  isCollapsed, 
-  onToggleCollapse, 
   isDarkMode, 
   onToggleTheme 
 }) => {
   const [expandedFolders, setExpandedFolders] = useState<string[]>(['project1']);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeChat, setActiveChat] = useState<string>('1'); // Example active chat
-  const [activeProject, setActiveProject] = useState<string>('project1'); // Example active project
+  const [activeChat, setActiveChat] = useState<string>('1');
+  const [activeProject, setActiveProject] = useState<string>('project1');
+  const [isAgentsSidebarOpen, setIsAgentsSidebarOpen] = useState(false);
 
   const toggleFolder = (folderId: string) => {
     setExpandedFolders(prev => 
@@ -36,12 +34,10 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
 
   const createNewProject = () => {
     console.log('Creating new project...');
-    // TODO: Add your project creation logic here
   };
 
   const createNewChat = () => {
     console.log('Creating new chat...');
-    // TODO: Add your new chat creation logic here
   };
 
   const projects = [
@@ -88,149 +84,81 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
     { id: '7', title: 'Itchy Skin Reaction', timestamp: 'Previous 7 Days' },
   ];
 
-  if (isCollapsed) {
-    return (
-      <TooltipProvider>
-        <div className={`w-14 border-r flex flex-col h-screen transition-all duration-200 ease-in-out ${
-          isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
-        }`}>
-          <div className="p-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onToggleCollapse}
-                  className={`w-full h-10 p-0 transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
-                    isDarkMode 
-                      ? 'hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
-                      : 'hover:bg-gray-100 text-gray-600 focus:ring-gray-400'
-                  }`}
-                >
-                  <PanelLeft className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>Expand sidebar</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-          
-          {/* Action buttons in collapsed view */}
-          <div className="px-2 space-y-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={createNewChat}
-                  className={`w-full h-10 p-0 transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
-                    isDarkMode 
-                      ? 'hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
-                      : 'hover:bg-gray-100 text-gray-600 focus:ring-gray-400'
-                  }`}
-                >
-                  <Pen className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>New chat</p>
-              </TooltipContent>
-            </Tooltip>
-            
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={createNewProject}
-                  className={`w-full h-10 p-0 transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
-                    isDarkMode 
-                      ? 'hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
-                      : 'hover:bg-gray-100 text-gray-600 focus:ring-gray-400'
-                  }`}
-                >
-                  <FolderPlus className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>New project</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-          
-          <div className="flex-1" />
-          
-          <div className="p-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onToggleTheme}
-                  className={`w-full h-10 p-0 transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-offset-2 ${
-                    isDarkMode 
-                      ? 'hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
-                      : 'hover:bg-gray-100 text-gray-600 focus:ring-gray-400'
-                  }`}
-                >
-                  {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>{isDarkMode ? 'Light mode' : 'Dark mode'}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </div>
-      </TooltipProvider>
-    );
-  }
-
   return (
-    <div className={`w-64 border-r flex flex-col h-screen transition-all duration-200 ease-in-out ${
-      isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
-    }`}>
-      {/* Fixed Header - Action buttons and search */}
-      <div className="flex-shrink-0">
-        <SidebarHeader
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          onCreateNewChat={createNewChat}
-          onCreateNewProject={createNewProject}
-          isDarkMode={isDarkMode}
-        />
-      </div>
+    <>
+      <div className={`w-64 border-r flex flex-col h-screen ${
+        isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
+      }`}>
+        {/* System Monitor */}
+        <SystemMonitor isDarkMode={isDarkMode} />
 
-      {/* Scrollable middle section - Projects and chat history */}
-      <div className="flex-1 min-h-0">
-        <ScrollArea className="h-full px-3">
-          <ProjectSection
-            projects={projects}
-            expandedFolders={expandedFolders}
-            onToggleFolder={toggleFolder}
+        {/* Header with search and action buttons */}
+        <div className="flex-shrink-0">
+          <SidebarHeader
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onCreateNewChat={createNewChat}
+            onCreateNewProject={createNewProject}
             isDarkMode={isDarkMode}
-            activeChat={activeChat}
-            activeProject={activeProject}
           />
+        </div>
 
-          <ChatHistorySection
-            chats={allChats}
-            isDarkMode={isDarkMode}
-            activeChat={activeChat}
-          />
-        </ScrollArea>
+        {/* Scrollable middle section */}
+        <div className="flex-1 min-h-0">
+          <ScrollArea className="h-full px-3">
+            <ProjectSection
+              projects={projects}
+              expandedFolders={expandedFolders}
+              onToggleFolder={toggleFolder}
+              isDarkMode={isDarkMode}
+              activeChat={activeChat}
+              activeProject={activeProject}
+            />
+
+            <ChatHistorySection
+              chats={allChats}
+              isDarkMode={isDarkMode}
+              activeChat={activeChat}
+            />
+          </ScrollArea>
+        </div>
+
+        {/* Footer with action buttons */}
+        <div className={`p-3 border-t space-y-2 ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+          <Button
+            variant="ghost"
+            onClick={() => setIsAgentsSidebarOpen(true)}
+            className={`w-full justify-start text-sm h-8 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
+              isDarkMode 
+                ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100 focus:ring-gray-500' 
+                : 'text-gray-700 hover:bg-gray-100 focus:ring-gray-400'
+            }`}
+          >
+            <Users className="h-4 w-4 mr-2" />
+            Agents
+          </Button>
+          
+          <Button
+            variant="ghost"
+            onClick={onToggleTheme}
+            className={`w-full justify-center text-sm h-8 p-0 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
+              isDarkMode 
+                ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100 focus:ring-gray-500' 
+                : 'text-gray-700 hover:bg-gray-100 focus:ring-gray-400'
+            }`}
+          >
+            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+        </div>
       </div>
 
-      {/* Fixed Footer - Theme toggle and collapse */}
-      <div className="flex-shrink-0">
-        <SidebarFooter
-          isDarkMode={isDarkMode}
-          onToggleTheme={onToggleTheme}
-          onToggleCollapse={onToggleCollapse}
-        />
-      </div>
-    </div>
+      {/* Agents Sidebar */}
+      <AgentsSidebar
+        isOpen={isAgentsSidebarOpen}
+        onClose={() => setIsAgentsSidebarOpen(false)}
+        isDarkMode={isDarkMode}
+      />
+    </>
   );
 };
 
