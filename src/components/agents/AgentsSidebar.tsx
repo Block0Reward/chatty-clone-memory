@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { FileText, Lightbulb, Users } from 'lucide-react';
+import { FileText, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -62,6 +62,12 @@ const AgentsSidebar: React.FC<AgentsSidebarProps> = ({ isOpen, onClose, isDarkMo
     }
   };
 
+  const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
+    isDarkMode 
+      ? 'text-gray-300 bg-gray-800/40 hover:bg-gray-700/60 border-0' 
+      : 'text-gray-700 bg-gray-100/60 hover:bg-gray-200/80 border-0'
+  }`;
+
   if (!isOpen) return null;
 
   return (
@@ -70,22 +76,23 @@ const AgentsSidebar: React.FC<AgentsSidebarProps> = ({ isOpen, onClose, isDarkMo
     }`}>
       {/* Top header with switcher */}
       <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-        <div className="flex items-center justify-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowLogs(!showLogs)}
-            className={`h-8 w-8 rounded-lg transition-all duration-200 ${
-              showLogs
-                ? 'bg-primary text-primary-foreground'
-                : isDarkMode 
-                  ? 'text-gray-300 hover:bg-gray-700/60' 
-                  : 'text-gray-700 hover:bg-gray-200/80'
-            }`}
-          >
-            {showLogs ? <Users className="h-4 w-4" /> : <FileText className="h-4 w-4" />}
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          onClick={() => setShowLogs(!showLogs)}
+          className={buttonBaseClasses}
+        >
+          {showLogs ? (
+            <>
+              <Users className="h-4 w-4 mr-3 flex-shrink-0" />
+              Show Agents
+            </>
+          ) : (
+            <>
+              <FileText className="h-4 w-4 mr-3 flex-shrink-0" />
+              Show Logs
+            </>
+          )}
+        </Button>
       </div>
 
       {/* Content */}
@@ -107,7 +114,6 @@ const AgentsSidebar: React.FC<AgentsSidebarProps> = ({ isOpen, onClose, isDarkMo
                     {agent.name}
                   </span>
                   <div className="flex items-center space-x-2">
-                    <Lightbulb className={`h-4 w-4 ${getStatusColor(agent.status)}`} />
                     <div className={getStatusIcon(agent.status)} />
                   </div>
                 </div>

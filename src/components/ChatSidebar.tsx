@@ -99,24 +99,21 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
         {/* Top row: Theme Toggle and System Monitor */}
         <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
           <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onToggleTheme}
-              className={`h-8 w-8 rounded-lg ${
-                isDarkMode 
-                  ? 'text-gray-300 hover:bg-gray-700/60' 
-                  : 'text-gray-700 hover:bg-gray-200/80'
-              }`}
-            >
-              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
+            <div className="flex items-center space-x-2">
+              <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                {isDarkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+              </span>
+              <Switch
+                checked={isDarkMode}
+                onCheckedChange={onToggleTheme}
+              />
+            </div>
             
             <SystemMonitor isDarkMode={isDarkMode} />
           </div>
         </div>
 
-        {/* Header with search and action buttons */}
+        {/* Header with action buttons */}
         <div className="flex-shrink-0">
           <SidebarHeader
             searchQuery={searchQuery}
@@ -124,29 +121,45 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
             onCreateNewChat={createNewChat}
             onCreateNewProject={createNewProject}
             isDarkMode={isDarkMode}
+            showSearch={false}
           />
         </div>
 
         {/* Agents Button */}
+        <div className={`px-3 pb-3`}>
+          <Button
+            variant="ghost"
+            className={`${buttonBaseClasses} ${isAgentsSidebarOpen ? 'bg-primary/20 text-primary' : ''}`}
+            onClick={() => setIsAgentsSidebarOpen(!isAgentsSidebarOpen)}
+          >
+            <Users className="h-4 w-4 mr-3 flex-shrink-0" />
+            Agents
+          </Button>
+        </div>
+
+        {/* Search */}
         <div className={`px-3 pb-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-          <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              className={buttonBaseClasses}
-            >
-              <Users className="h-4 w-4 mr-3 flex-shrink-0" />
-              Agents
-            </Button>
-            <Switch
-              checked={isAgentsSidebarOpen}
-              onCheckedChange={setIsAgentsSidebarOpen}
-              className="ml-2"
+          <div className="relative">
+            <input
+              placeholder="Search chats"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`w-full h-9 pl-9 pr-3 text-sm rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-offset-2 ${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-600 text-gray-200 placeholder:text-gray-400 focus:ring-gray-500' 
+                  : 'bg-white border-gray-200 focus:ring-gray-400'
+              }`}
             />
+            <div className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors duration-200 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-400'
+            }`}>
+              🔍
+            </div>
           </div>
         </div>
 
         {/* Scrollable middle section with spacing */}
-        <div className="flex-1 min-h-0 pt-4">
+        <div className="flex-1 min-h-0 pt-6">
           <ScrollArea className="h-full px-3">
             <ProjectSection
               projects={projects}
@@ -157,7 +170,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
               activeProject={activeProject}
             />
 
-            <div className="mt-6">
+            <div className="mt-8">
               <ChatHistorySection
                 chats={allChats}
                 isDarkMode={isDarkMode}

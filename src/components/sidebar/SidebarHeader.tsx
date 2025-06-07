@@ -12,6 +12,7 @@ interface SidebarHeaderProps {
   onCreateNewChat: () => void;
   onCreateNewProject: () => void;
   isDarkMode: boolean;
+  showSearch?: boolean;
 }
 
 const SidebarHeader: React.FC<SidebarHeaderProps> = ({
@@ -19,7 +20,8 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   onSearchChange,
   onCreateNewChat,
   onCreateNewProject,
-  isDarkMode
+  isDarkMode,
+  showSearch = true
 }) => {
   const buttonBaseClasses = `w-full h-10 justify-start text-sm font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
     isDarkMode 
@@ -76,23 +78,25 @@ const SidebarHeader: React.FC<SidebarHeaderProps> = ({
       </div>
 
       {/* Search */}
-      <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
-        <div className="relative">
-          <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors duration-200 ${
-            isDarkMode ? 'text-gray-400' : 'text-gray-400'
-          }`} />
-          <Input
-            placeholder="Search chats"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className={`pl-9 h-9 text-sm transition-all duration-200 focus:ring-2 focus:ring-offset-2 ${
-              isDarkMode 
-                ? 'bg-gray-800 border-gray-600 text-gray-200 placeholder:text-gray-400 focus:ring-gray-500' 
-                : 'bg-white border-gray-200 focus:ring-gray-400'
-            }`}
-          />
+      {showSearch && (
+        <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+          <div className="relative">
+            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 transition-colors duration-200 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-400'
+            }`} />
+            <Input
+              placeholder="Search chats"
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className={`pl-9 h-9 text-sm transition-all duration-200 focus:ring-2 focus:ring-offset-2 ${
+                isDarkMode 
+                  ? 'bg-gray-800 border-gray-600 text-gray-200 placeholder:text-gray-400 focus:ring-gray-500' 
+                  : 'bg-white border-gray-200 focus:ring-gray-400'
+              }`}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
