@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, FileText, Lightbulb } from 'lucide-react';
+import { FileText, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -68,39 +68,18 @@ const AgentsSidebar: React.FC<AgentsSidebarProps> = ({ isOpen, onClose, isDarkMo
     <div className={`fixed right-0 top-0 h-full w-64 z-50 border-l transform transition-transform duration-200 ease-in-out ${
       isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
     }`}>
-      {/* Header */}
-      <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-        <div className="flex items-center justify-between">
-          <h2 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-            {showLogs ? 'Process Logs' : 'Agents'}
-          </h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className={`h-8 w-8 p-0 ${
-              isDarkMode 
-                ? 'hover:bg-gray-700 text-gray-300' 
-                : 'hover:bg-gray-100 text-gray-600'
-            }`}
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-
-      {/* Logs Toggle Button */}
+      {/* Logs Button at top */}
       <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
         <Button
-          variant={showLogs ? "default" : "outline"}
+          variant={showLogs ? "default" : "ghost"}
           onClick={() => setShowLogs(!showLogs)}
-          className={`w-full justify-start text-sm h-8 ${
+          className={`w-full justify-start text-sm h-10 font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
             isDarkMode 
-              ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100' 
-              : 'text-gray-700 hover:bg-gray-100'
+              ? 'text-gray-300 bg-gray-800/40 hover:bg-gray-700/60 border-0' 
+              : 'text-gray-700 bg-gray-100/60 hover:bg-gray-200/80 border-0'
           }`}
         >
-          <FileText className="h-4 w-4 mr-2" />
+          <FileText className="h-4 w-4 mr-3 flex-shrink-0" />
           {showLogs ? 'Show Agents' : 'Show Logs'}
         </Button>
       </div>

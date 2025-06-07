@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Cpu, HardDrive, Zap } from 'lucide-react';
 
 interface SystemStats {
   cpu: number;
@@ -37,21 +38,21 @@ const SystemMonitor: React.FC<SystemMonitorProps> = ({ isDarkMode }) => {
     <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-1">
-          <span className="text-xs font-medium">CPU</span>
-          <span className={`text-xs font-mono ${getUsageColor(stats.cpu)}`}>
-            {stats.cpu}%
+          <Cpu className="h-4 w-4" />
+          <span className={`text-sm font-bold ${getUsageColor(stats.cpu)}`}>
+            {stats.cpu}
           </span>
         </div>
         <div className="flex items-center space-x-1">
-          <span className="text-xs font-medium">GPU</span>
-          <span className={`text-xs font-mono ${getUsageColor(stats.gpu)}`}>
-            {stats.gpu}%
+          <Zap className="h-4 w-4" />
+          <span className={`text-sm font-bold ${getUsageColor(stats.gpu)}`}>
+            {stats.gpu}
           </span>
         </div>
         <div className="flex items-center space-x-1">
-          <span className="text-xs font-medium">RAM</span>
-          <span className={`text-xs font-mono ${getUsageColor(stats.ram)}`}>
-            {stats.ram}%
+          <HardDrive className="h-4 w-4" />
+          <span className={`text-sm font-bold ${getUsageColor(stats.ram)}`}>
+            {stats.ram}
           </span>
         </div>
       </div>

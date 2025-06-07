@@ -24,7 +24,6 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const [activeChat, setActiveChat] = useState<string>('1');
   const [activeProject, setActiveProject] = useState<string>('project1');
   const [isAgentsSidebarOpen, setIsAgentsSidebarOpen] = useState(false);
-  const [agentsEnabled, setAgentsEnabled] = useState(false);
 
   const toggleFolder = (folderId: string) => {
     setExpandedFolders(prev => 
@@ -91,6 +90,18 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
       <div className={`w-64 border-r flex flex-col h-screen ${
         isDarkMode ? 'bg-gray-900 border-gray-700' : 'bg-[#f7f7f8] border-gray-200'
       }`}>
+        {/* Theme Toggle at top */}
+        <div className={`p-3 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+          <div className="flex items-center space-x-2">
+            <Sun className="h-4 w-4" />
+            <Switch
+              checked={isDarkMode}
+              onCheckedChange={onToggleTheme}
+            />
+            <Moon className="h-4 w-4" />
+          </div>
+        </div>
+
         {/* System Monitor */}
         <SystemMonitor isDarkMode={isDarkMode} />
 
@@ -110,19 +121,18 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
-              onClick={() => setIsAgentsSidebarOpen(true)}
-              className={`flex-1 justify-start text-sm h-8 transition-all duration-200 hover:scale-[1.02] focus:ring-2 focus:ring-offset-2 ${
+              className={`flex-1 justify-start text-sm h-10 font-normal px-3 py-2 rounded-lg transition-all duration-200 ${
                 isDarkMode 
-                  ? 'text-gray-300 hover:bg-gray-800 hover:text-gray-100 focus:ring-gray-500' 
-                  : 'text-gray-700 hover:bg-gray-100 focus:ring-gray-400'
+                  ? 'text-gray-300 bg-gray-800/40 hover:bg-gray-700/60 border-0' 
+                  : 'text-gray-700 bg-gray-100/60 hover:bg-gray-200/80 border-0'
               }`}
             >
-              <Users className="h-4 w-4 mr-2" />
+              <Users className="h-4 w-4 mr-3 flex-shrink-0" />
               Agents
             </Button>
             <Switch
-              checked={agentsEnabled}
-              onCheckedChange={setAgentsEnabled}
+              checked={isAgentsSidebarOpen}
+              onCheckedChange={setIsAgentsSidebarOpen}
               className="ml-2"
             />
           </div>
@@ -146,20 +156,6 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
               activeChat={activeChat}
             />
           </ScrollArea>
-        </div>
-
-        {/* Footer with theme switcher */}
-        <div className={`p-3 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Sun className="h-4 w-4" />
-              <Switch
-                checked={isDarkMode}
-                onCheckedChange={onToggleTheme}
-              />
-              <Moon className="h-4 w-4" />
-            </div>
-          </div>
         </div>
       </div>
 

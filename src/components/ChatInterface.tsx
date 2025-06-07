@@ -12,9 +12,10 @@ interface Message {
 
 interface ChatInterfaceProps {
   isDarkMode: boolean;
+  isAgentsSidebarOpen?: boolean;
 }
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ isDarkMode }) => {
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ isDarkMode, isAgentsSidebarOpen = false }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -52,7 +53,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isDarkMode }) => {
   };
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className={`flex-1 flex flex-col transition-all duration-200 ${
+      isAgentsSidebarOpen ? 'mr-64' : ''
+    }`}>
       {/* Chat History */}
       <ChatHistory messages={messages} isDarkMode={isDarkMode} />
 
